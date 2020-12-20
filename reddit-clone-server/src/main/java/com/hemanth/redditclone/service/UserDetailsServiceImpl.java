@@ -1,4 +1,4 @@
-package com.hemanth.redditclone.security;
+package com.hemanth.redditclone.service;
 
 import com.hemanth.redditclone.model.User;
 import com.hemanth.redditclone.repository.UserRepository;
