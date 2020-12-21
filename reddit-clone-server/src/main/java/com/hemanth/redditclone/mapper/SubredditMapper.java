@@ -17,5 +17,6 @@ public interface SubredditMapper {
     @Mapping(source = "subredditDto.name", target = "name")
     @Mapping(source = "subredditDto.description", target = "description")
     @Mapping(source = "user", target = "user")
+    @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
     Subreddit mapToSubreddit(SubredditDto subredditDto, User user);
 }

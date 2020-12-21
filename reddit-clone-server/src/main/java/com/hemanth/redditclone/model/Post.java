@@ -29,11 +29,11 @@ public class Post {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subredditId")
+    @JoinColumn(name = "subredditId", nullable = false)
     private Subreddit subreddit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     private Instant createdAt;
