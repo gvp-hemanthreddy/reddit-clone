@@ -12,7 +12,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-    @Mapping(source = "postRequest.id", target = "id")
     @Mapping(source = "postRequest.title", target = "title")
     @Mapping(source = "postRequest.body", target = "body")
     @Mapping(source = "subreddit", target = "subreddit")

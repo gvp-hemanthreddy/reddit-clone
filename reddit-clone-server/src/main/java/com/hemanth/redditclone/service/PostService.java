@@ -49,9 +49,9 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostResponse getPostById(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ApiRequestException("Post not found with id - " + postId));
+    public PostResponse getPostByIdentifier(String identifier) {
+        Post post = postRepository.findByIdentifier(identifier)
+                .orElseThrow(() -> new ApiRequestException("Post not found with identifier - " + identifier));
         return postMapper.mapToDto(post, post.getSubreddit(), post.getUser());
     }
 

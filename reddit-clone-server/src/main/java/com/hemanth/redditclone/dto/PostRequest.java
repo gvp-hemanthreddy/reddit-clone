@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PostRequest {
-    private Long id;
     private String title;
     private String body;
     private String subreddit;

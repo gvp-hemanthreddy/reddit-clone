@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CommentResponse {
-    private Long id;
-    private String content;
-    private Long postId;
+    private String identifier;
+    private String body;
+    private String postIdentifier;
     private String username;
 }

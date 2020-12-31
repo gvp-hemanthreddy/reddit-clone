@@ -10,16 +10,17 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-    @Mapping(source = "commentRequest.id", target = "id")
-    @Mapping(source = "commentRequest.content", target = "content")
+    @Mapping(source = "commentRequest.body", target = "body")
+    @Mapping(target = "identifier", expression = "java(com.hemanth.redditclone.util.Utils.makeId(8))")
     @Mapping(source = "post", target = "post")
     @Mapping(source = "user", target = "user")
     @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
+    @Mapping(target = "updatedAt", expression = "java(java.time.Instant.now())")
     Comment mapToComment(CommentRequest commentRequest, Post post, User user);
 
-    @Mapping(source = "comment.id", target = "id")
-    @Mapping(source = "comment.content", target = "content")
-    @Mapping(target = "postId", expression = "java(comment.getPost().getId())")
+    @Mapping(source = "comment.identifier", target = "identifier")
+    @Mapping(source = "comment.body", target = "body")
+    @Mapping(target = "postIdentifier", expression = "java(comment.getPost().getIdentifier())")
     @Mapping(target = "username", expression = "java(comment.getUser().getUsername())")
     CommentResponse mapToDto(Comment comment);
 }

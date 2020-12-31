@@ -25,9 +25,9 @@ public class CommentService {
     private final CommentMapper commentMapper;
     private final AuthService authService;
 
-    public CommentResponse createComment(CommentRequest commentRequest) {
-        Post post = postRepository.findById(commentRequest.getPostId())
-                .orElseThrow(() -> new ApiRequestException("Post not found with id - " + commentRequest.getPostId()));
+    public CommentResponse createCommentOnPost(String identifier, CommentRequest commentRequest) {
+        Post post = postRepository.findByIdentifier(identifier)
+                .orElseThrow(() -> new ApiRequestException("Post not found with Identifier - " + identifier));
         Comment comment = commentRepository.save(commentMapper.mapToComment(commentRequest, post, authService.getCurrentUser()));
         return commentMapper.mapToDto(comment);
     }

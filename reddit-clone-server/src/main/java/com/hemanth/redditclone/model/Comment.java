@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
@@ -20,7 +21,11 @@ public class Comment {
 
     @Lob
     @NotEmpty
-    private String content;
+    private String body;
+
+    @Column(unique = true)
+    @NotBlank
+    private String identifier;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "postId", nullable = false)
@@ -31,4 +36,6 @@ public class Comment {
     private User user;
 
     private Instant createdAt;
+
+    private Instant updatedAt;
 }

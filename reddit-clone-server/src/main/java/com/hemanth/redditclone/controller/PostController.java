@@ -1,6 +1,8 @@
 package com.hemanth.redditclone.controller;
 
+import com.hemanth.redditclone.dto.CommentRequest;
 import com.hemanth.redditclone.dto.PostRequest;
+import com.hemanth.redditclone.service.CommentService;
 import com.hemanth.redditclone.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
     @PostMapping
     public ResponseEntity createPost(@RequestBody PostRequest postRequest) {
@@ -32,11 +35,18 @@ public class PostController {
                 .body(postService.getAllPosts());
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity getPostById(@PathVariable(value = "id") Long postId) {
+    @GetMapping("{identifier}/{slug}")
+    public ResponseEntity getPostByIdentifier(@PathVariable(value = "identifier") String identifier) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(postService.getPostById(postId));
+                .body(postService.getPostByIdentifier(identifier));
+    }
+
+    @PostMapping("{identifier}/{slug}/comments")
+    public ResponseEntity createCommentsOnPost(@PathVariable(value = "identifier") String identifier, @RequestBody CommentRequest commentRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commentService.createCommentOnPost(identifier, commentRequest));
     }
 
     @GetMapping("by-subreddit/{id}")
