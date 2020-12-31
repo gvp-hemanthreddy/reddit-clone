@@ -1,6 +1,6 @@
 package com.hemanth.redditclone.security;
 
-import com.hemanth.redditclone.exceptions.SpringRedditException;
+import com.hemanth.redditclone.exceptions.ApiRequestException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
@@ -30,7 +30,7 @@ public class JwtProvider {
             InputStream resourceAsStream = getClass().getResourceAsStream("/redditclone.jks");
             keyStore.load(resourceAsStream, "Pega@519".toCharArray());
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            throw new SpringRedditException("Exception occurred while loading keystore");
+            throw new ApiRequestException("Exception occurred while loading keystore");
         }
     }
 
@@ -46,7 +46,7 @@ public class JwtProvider {
         try {
             return keyStore.getKey("redditclone", "Pega@519".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
-            throw new SpringRedditException("Exception occured while retrieving public key from keystore");
+            throw new ApiRequestException("Exception occured while retrieving public key from keystore");
         }
     }
 
@@ -59,11 +59,11 @@ public class JwtProvider {
         try {
             return keyStore.getCertificate("redditclone").getPublicKey();
         } catch (KeyStoreException e) {
-            throw new SpringRedditException("Exception occured while retrieving public key from keystore");
+            throw new ApiRequestException("Exception occured while retrieving public key from keystore");
         }
     }
 
-    public String getUserNameFromToken(String jwt) {
+    public String getUsernameFromToken(String jwt) {
         //parserBuilder().setSigningKey(getPublicKey()).build().parseClaimsJws(jwt);
         Claims claims = parser()
                 .setSigningKey(getPublicKey())

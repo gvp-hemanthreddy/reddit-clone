@@ -3,11 +3,14 @@ package com.hemanth.redditclone.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
@@ -16,25 +19,26 @@ import java.time.Instant;
 @AllArgsConstructor
 @Data
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotBlank(message = "first name is required")
     private String firstName;
 
-    @NotBlank(message = "last name is required")
     private String lastName;
 
-    @NotBlank(message = "user name is required")
-    private String userName;
-
-    @Email
-    @NotBlank(message = "email is required")
+    @Email(message = "Must be a valid email address")
+    @NotBlank(message = "Email is empty")
+    @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "password is required")
+    @Length(min = 3, max = 255, message = "Must be at least 3 characters long")
+    @Column(unique = true)
+    private String username;
+
+    @Length(min = 6, max = 255, message = "Must be at least 6 characters long")
     private String password;
 
     private Instant created;

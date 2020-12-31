@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PostRequest {
     private Long id;
-    private String name;
-    private String description;
+    private String title;
+    private String body;
     private String subreddit;
 }

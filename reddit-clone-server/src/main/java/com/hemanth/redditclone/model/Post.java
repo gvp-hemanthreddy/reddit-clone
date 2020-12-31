@@ -3,14 +3,9 @@ package com.hemanth.redditclone.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
@@ -18,15 +13,26 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "posts",
+        indexes = @Index(columnList = "slug"))
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Post name is required")
-    private String name;
+    @NotBlank(message = "Post title is required")
+    private String title;
 
-    private String description;
+    @Lob
+    @Nullable
+    private String body;
+
+    @Column(unique = true)
+    @NotBlank
+    private String identifier;
+
+    @NotBlank
+    private String slug;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subredditId", nullable = false)
@@ -37,4 +43,6 @@ public class Post {
     private User user;
 
     private Instant createdAt;
+
+    private Instant updatedAt;
 }

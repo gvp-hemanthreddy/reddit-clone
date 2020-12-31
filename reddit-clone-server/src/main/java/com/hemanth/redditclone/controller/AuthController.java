@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -21,19 +25,23 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> signUp(@Valid @RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
-        return new ResponseEntity<>("User registration successful. Please check email to activate account", HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("User registration successful. Please check email to activate account");
     }
 
     @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyEmail(@PathVariable String token) {
         authService.verifyAccount(token);
-        return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
+        return ResponseEntity
+                .status(OK)
+                .body("Account Activated Successfully");
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
+    public AuthenticationResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
 }

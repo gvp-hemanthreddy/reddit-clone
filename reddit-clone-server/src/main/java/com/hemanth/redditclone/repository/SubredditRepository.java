@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface SubredditRepository extends JpaRepository<Subreddit, Long> {
+//    @Query("FROM subreddits WHERE name = ?1")
+    boolean existsByName(String name);
     Optional<Subreddit> findByName(String name);
 }
