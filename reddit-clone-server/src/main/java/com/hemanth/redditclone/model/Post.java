@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -33,6 +34,12 @@ public class Post {
 
     @NotBlank
     private String slug;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<Comment> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<Vote> votes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subredditId", nullable = false)

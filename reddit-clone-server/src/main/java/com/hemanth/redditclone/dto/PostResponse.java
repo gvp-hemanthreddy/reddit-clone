@@ -17,10 +17,7 @@ public class PostResponse {
     private String username;
     private String slug;
     private String url;
+    private int voteCount;
+    private int commentCount;
     private Instant createdAt;
-    /**
-     * Pending-
-     * voteCount
-     * commentCount
-     */
 }

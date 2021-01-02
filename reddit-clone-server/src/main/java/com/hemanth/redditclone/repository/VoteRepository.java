@@ -1,5 +1,6 @@
 package com.hemanth.redditclone.repository;
 
+import com.hemanth.redditclone.model.Comment;
 import com.hemanth.redditclone.model.Post;
 import com.hemanth.redditclone.model.User;
 import com.hemanth.redditclone.model.Vote;
@@ -11,4 +12,8 @@ import java.util.Optional;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     Optional<Vote> findTopByPostAndUserOrderByIdDesc(Post post, User currentUser);
+
+    Optional<Vote> findByPostAndUser(Post post, User user);
+
+    Optional<Vote> findByCommentAndUser(Comment comment, User user);
 }

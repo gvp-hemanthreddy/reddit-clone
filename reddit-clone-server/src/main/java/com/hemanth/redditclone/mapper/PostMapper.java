@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
+    @Mapping(source = "postRequest.id", target = "id")
     @Mapping(source = "postRequest.title", target = "title")
     @Mapping(source = "postRequest.body", target = "body")
     @Mapping(source = "subreddit", target = "subreddit")
@@ -32,8 +33,14 @@ public interface PostMapper {
     PostResponse mapToDto(Post post, Subreddit subreddit, User currentUser);
 
     @AfterMapping
-    default void setPostUrl(@MappingTarget PostResponse postResponse, Post post) {
+    default void setPostUrlAndCount(@MappingTarget PostResponse postResponse, Post post) {
         Subreddit subreddit = post.getSubreddit();
         postResponse.setUrl("r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
+        if (post.getVotes() != null) {
+            postResponse.setVoteCount(post.getVotes().size());
+        }
+        if (post.getComments() != null) {
+            postResponse.setCommentCount(post.getComments().size());
+        }
     }
 }

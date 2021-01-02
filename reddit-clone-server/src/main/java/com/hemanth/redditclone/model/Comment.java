@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -26,6 +27,9 @@ public class Comment {
     @Column(unique = true)
     @NotBlank
     private String identifier;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
+    private List<Vote> votes;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "postId", nullable = false)
