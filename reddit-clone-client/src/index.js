@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
 import LocalStorageService from "./utils/LocalStorageService";
+
+import "./index.css";
+import "./styles/icons.css";
 
 axios.defaults.baseURL = "http://localhost:8080/api/";
 axios.defaults.headers.post["Content-Type"] = "application/json";

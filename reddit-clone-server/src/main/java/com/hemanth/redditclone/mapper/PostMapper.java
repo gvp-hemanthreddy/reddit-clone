@@ -5,10 +5,13 @@ import com.hemanth.redditclone.dto.PostResponse;
 import com.hemanth.redditclone.model.Post;
 import com.hemanth.redditclone.model.Subreddit;
 import com.hemanth.redditclone.model.User;
+import com.hemanth.redditclone.model.Vote;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
@@ -33,11 +36,20 @@ public interface PostMapper {
     PostResponse mapToDto(Post post, Subreddit subreddit, User currentUser);
 
     @AfterMapping
-    default void setPostUrlAndCount(@MappingTarget PostResponse postResponse, Post post) {
+    default void setPostUrlAndCount(@MappingTarget PostResponse postResponse, Post post, User user) {
         Subreddit subreddit = post.getSubreddit();
         postResponse.setUrl("r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
         if (post.getVotes() != null) {
-            postResponse.setVoteCount(post.getVotes().size());
+            int voteScore = 0;
+            List<Vote> votes = post.getVotes();
+            // TODO: try to use stream reduce here
+            for (int i = 0; i < votes.size(); i++) {
+                voteScore += votes.get(i).getValue();
+                if (user.equals(votes.get(i).getUser())) {
+                    postResponse.setUserVote(votes.get(i).getValue());
+                }
+            }
+            postResponse.setVoteScore(voteScore);
         }
         if (post.getComments() != null) {
             postResponse.setCommentCount(post.getComments().size());

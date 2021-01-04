@@ -17,7 +17,8 @@ public class PostResponse {
     private String username;
     private String slug;
     private String url;
-    private int voteCount;
+    private int userVote;
+    private int voteScore;
     private int commentCount;
     private Instant createdAt;
 }
