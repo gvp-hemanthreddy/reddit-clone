@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import InputGroup from "./InputGroup";
 import LocalStorageService from "../utils/LocalStorageService";
+import { useAuthDispatch, useAuthState } from "../context/Auth";
 
-function Register() {
-  const [userName, setUserName] = useState("");
+function Login() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const dispatch = useAuthDispatch();
+  const { authenticated } = useAuthState();
 
   const errorsListToMap = (errorsList) => {
     const errorsMap = {};
@@ -20,7 +23,7 @@ function Register() {
 
   const validateInput = () => {
     const errorsMap = {};
-    if (userName === "") errorsMap.userName = "Username is Empty";
+    if (username === "") errorsMap.username = "username is Empty";
     if (password === "") errorsMap.password = "Password is Empty";
     setErrors(errorsMap);
     return Object.keys(errorsMap).length === 0;
@@ -33,10 +36,11 @@ function Register() {
 
     try {
       const response = await axios.post("auth/login", {
-        userName,
+        username,
         password,
       });
       LocalStorageService.setToken(response.data);
+      dispatch("LOGIN", response.data.username);
       history.push("/");
     } catch (err) {
       if (err.response?.data?.subErrors) {
@@ -50,6 +54,10 @@ function Register() {
   useEffect(() => {
     document.title = "Login";
   }, []);
+
+  if (authenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="flex bg-white">
@@ -66,10 +74,10 @@ function Register() {
           <form onSubmit={formSubmit}>
             <InputGroup
               type="text"
-              placeholder="Username"
-              value={userName}
-              setValue={setUserName}
-              error={errors.userName}
+              placeholder="username"
+              value={username}
+              setValue={setUsername}
+              error={errors.username}
             />
             <InputGroup
               type="password"
@@ -100,4 +108,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;

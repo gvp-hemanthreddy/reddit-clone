@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import InputGroup from "./InputGroup";
+import { useAuthState } from "../context/Auth";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ function Register() {
   const [agreement, setAgreement] = useState(false);
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const { authenticated } = useAuthState();
 
   const errorsListToMap = (errorsList) => {
     const errorsMap = {};
@@ -53,6 +55,10 @@ function Register() {
   useEffect(() => {
     document.title = "Register";
   }, []);
+
+  if (authenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="flex bg-white">

@@ -1,7 +1,27 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useAuthDispatch, useAuthState } from "../context/Auth";
+import axios from "axios";
+import LocalStorageService from "../utils/LocalStorageService";
 
 function NavBar() {
+  const { authenticated } = useAuthState();
+  const dispatch = useAuthDispatch();
+  const refreshToken = LocalStorageService.getRefreshToken();
+
+  const logout = () => {
+    axios
+      .post("auth/logout", {
+        refreshToken,
+      })
+      .then(() => {
+        dispatch("LOGOUT", {});
+        LocalStorageService.clearTokens();
+        window.location.reload();
+      })
+      .catch((err) => console.error("Error while logging out" + err));
+  };
+
   return (
     <div className="inset-x-0 top-0 z-10 flex items-center justify-center h-12 px-5 bg-white">
       {/* Logo */}
@@ -30,12 +50,20 @@ function NavBar() {
 
       {/* Auth buttons */}
       <div className="flex items-center">
-        <Link to="/login" className="mr-4 button blue hollow">
-          Log in
-        </Link>
-        <Link to="/register" className="button blue">
-          Sign Up
-        </Link>
+        {authenticated ? (
+          <button className="mr-4 button blue hollow" onClick={logout}>
+            Logout
+          </button>
+        ) : (
+          <Fragment>
+            <Link to="/login" className="mr-4 button blue hollow">
+              Log in
+            </Link>
+            <Link to="/register" className="button blue">
+              Sign Up
+            </Link>
+          </Fragment>
+        )}
       </div>
     </div>
   );

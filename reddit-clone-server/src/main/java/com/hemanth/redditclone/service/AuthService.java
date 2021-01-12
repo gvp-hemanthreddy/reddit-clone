@@ -3,8 +3,10 @@ package com.hemanth.redditclone.service;
 import com.hemanth.redditclone.dto.AuthenticationResponse;
 import com.hemanth.redditclone.dto.LoginRequest;
 import com.hemanth.redditclone.dto.NotificationEmail;
+import com.hemanth.redditclone.dto.RefreshTokenRequest;
 import com.hemanth.redditclone.dto.RegisterRequest;
 import com.hemanth.redditclone.exceptions.ApiRequestException;
+import com.hemanth.redditclone.model.RefreshToken;
 import com.hemanth.redditclone.model.User;
 import com.hemanth.redditclone.model.VerificationToken;
 import com.hemanth.redditclone.repository.UserRepository;
@@ -26,6 +28,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +46,7 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final RefreshTokenService refreshTokenService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
@@ -129,7 +133,13 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authenticate);
 
             String token = jwtProvider.generateToken(authenticate);
-            return new AuthenticationResponse(token);
+            return AuthenticationResponse
+                    .builder()
+                    .authenticationToken(token)
+                    .refreshToken(refreshTokenService.generateRefreshToken(getCurrentUser()).getToken())
+                    .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationTimeInMillis()))
+                    .username(loginRequest.getUsername())
+                    .build();
         } catch (DisabledException ex) {
             Map<String, String> errorsMap = new HashMap<>();
             errorsMap.put("loginError", "Please activate your account. Check your email for activation link");
@@ -143,11 +153,26 @@ public class AuthService {
         }
     }
 
-    public User getCurrentUser() {
+    User getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("%s not found", username)));
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String token = refreshTokenRequest.getRefreshToken();
+        RefreshToken refreshToken = refreshTokenService
+                .validateRefreshToken(token)
+                .orElseThrow(() -> new ApiRequestException("Invalid Refresh token - " + token));
+        String username = refreshToken.getUser().getUsername();
+        return AuthenticationResponse
+                .builder()
+                .authenticationToken(jwtProvider.generateToken(username))
+                .refreshToken(token)
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationTimeInMillis()))
+                .username(username)
+                .build();
     }
 }

@@ -2,7 +2,13 @@ package com.hemanth.redditclone.security;
 
 import com.hemanth.redditclone.exceptions.ApiRequestException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,12 +22,19 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.time.Instant;
+import java.util.Date;
 
 import static io.jsonwebtoken.Jwts.parser;
 
 @Service
+@Slf4j
 public class JwtProvider {
     private KeyStore keyStore;
+
+    @Getter
+    @Value("${jwt.expiration.time}")
+    private Long jwtExpirationTimeInMillis;
 
     @PostConstruct
     public void init() {
@@ -39,6 +52,15 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
+                .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationTimeInMillis)))
+                .compact();
+    }
+
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .signWith(getPrivateKey())
+                .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationTimeInMillis)))
                 .compact();
     }
 
@@ -51,8 +73,19 @@ public class JwtProvider {
     }
 
     public boolean validateToken(String jwt) {
-        parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
-        return true;
+        try {
+            parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
+            return true;
+        } catch (ExpiredJwtException exception) {
+            log.warn("Request to parse expired JWT : {} failed : {}", jwt, exception.getMessage());
+        } catch (UnsupportedJwtException exception) {
+            log.warn("Request to parse unsupported JWT : {} failed : {}", jwt, exception.getMessage());
+        } catch (MalformedJwtException exception) {
+            log.warn("Request to parse invalid JWT : {} failed : {}", jwt, exception.getMessage());
+        } catch (IllegalArgumentException exception) {
+            log.warn("Request to parse empty or null JWT : {} failed : {}", jwt, exception.getMessage());
+        }
+        return false;
     }
 
     private Key getPublicKey() {
