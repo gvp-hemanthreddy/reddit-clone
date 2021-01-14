@@ -49,13 +49,6 @@ public class PostController {
                 .body(commentService.createCommentOnPost(identifier, commentRequest));
     }
 
-    @GetMapping("by-subreddit/{id}")
-    public ResponseEntity getPostsBySubreddit(@PathVariable(value = "id") Long subredditId) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(postService.getPostsBySubreddit(subredditId));
-    }
-
     @GetMapping("by-username/{username}")
     public ResponseEntity getPostsByUsername(@PathVariable(value = "username") String username) {
         return ResponseEntity

@@ -11,6 +11,7 @@ import com.hemanth.redditclone.repository.PostRepository;
 import com.hemanth.redditclone.repository.SubredditRepository;
 import com.hemanth.redditclone.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -43,25 +44,16 @@ public class PostService {
     }
 
     public List<PostResponse> getAllPosts() {
-        return postRepository.findAll()
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
                 .stream()
-                .map(post -> postMapper.mapToDto(post, post.getSubreddit(), post.getUser()))
+                .map(post -> postMapper.mapToDto(post, post.getSubreddit(), authService.getCurrentUser()))
                 .collect(Collectors.toList());
     }
 
     public PostResponse getPostByIdentifier(String identifier) {
         Post post = postRepository.findByIdentifier(identifier)
                 .orElseThrow(() -> new ApiRequestException("Post not found with identifier - " + identifier));
-        return postMapper.mapToDto(post, post.getSubreddit(), post.getUser());
-    }
-
-    public List<PostResponse> getPostsBySubreddit(Long subredditId) {
-        Subreddit subreddit = subredditRepository.findById(subredditId)
-                .orElseThrow(() -> new ApiRequestException("Subreddit not found with id - " + subredditId));
-        return postRepository.findBySubreddit(subreddit)
-                .stream()
-                .map(post -> postMapper.mapToDto(post, subreddit, post.getUser()))
-                .collect(Collectors.toList());
+        return postMapper.mapToDto(post, post.getSubreddit(), authService.getCurrentUser());
     }
 
     public List<PostResponse> getPostsByUsername(String username) {
@@ -69,7 +61,7 @@ public class PostService {
                 .orElseThrow(() -> new ApiRequestException("User not found with name - " + username));
         return postRepository.findByUser(user)
                 .stream()
-                .map(post -> postMapper.mapToDto(post, post.getSubreddit(), post.getUser()))
+                .map(post -> postMapper.mapToDto(post, post.getSubreddit(), authService.getCurrentUser()))
                 .collect(Collectors.toList());
     }
 }

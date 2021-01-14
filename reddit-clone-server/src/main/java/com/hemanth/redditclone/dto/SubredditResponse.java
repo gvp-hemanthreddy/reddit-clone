@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +18,5 @@ public class SubredditResponse {
     private String description;
     private String username;
     private Instant createdAt;
+    private List<PostResponse> posts;
 }

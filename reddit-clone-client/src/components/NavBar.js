@@ -28,7 +28,7 @@ function NavBar() {
       <div className="flex">
         <Link to="/">
           <img
-            src="images/redditLogo.svg"
+            src="/images/redditLogo.svg"
             className="w-8 h-8 mr-2"
             alt="Reddit Logo"
           />

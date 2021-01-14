@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findBySubreddit(Subreddit subreddit);
+    List<Post> findBySubredditOrderByCreatedAtDesc(Subreddit subreddit);
 
     List<Post> findByUser(User user);
 

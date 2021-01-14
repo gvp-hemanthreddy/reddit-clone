@@ -25,11 +25,11 @@ public class SubredditController {
                 .body(subredditService.getAllSubreddits());
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity getSubredditById(@PathVariable Long id) {
+    @GetMapping("{name}")
+    public ResponseEntity getSubredditByName(@PathVariable String name) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(subredditService.getSubredditById(id));
+                .body(subredditService.getSubredditByName(name));
     }
 
     @PostMapping

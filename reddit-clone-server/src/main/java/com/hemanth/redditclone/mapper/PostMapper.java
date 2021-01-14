@@ -32,20 +32,20 @@ public interface PostMapper {
     @Mapping(source = "post.slug", target = "slug")
     @Mapping(source = "post.createdAt", target = "createdAt")
     @Mapping(source = "subreddit.name", target = "subreddit")
-    @Mapping(source = "currentUser.username", target = "username")
+    @Mapping(target = "username", expression = "java(post.getUser().getUsername())")
     PostResponse mapToDto(Post post, Subreddit subreddit, User currentUser);
 
     @AfterMapping
     default void setPostUrlAndCount(@MappingTarget PostResponse postResponse, Post post, User user) {
         Subreddit subreddit = post.getSubreddit();
         postResponse.setUrl("r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
-        if (post.getVotes() != null) {
+        List<Vote> votes = post.getVotes();
+        if (votes != null) {
             int voteScore = 0;
-            List<Vote> votes = post.getVotes();
             // TODO: try to use stream reduce here
             for (int i = 0; i < votes.size(); i++) {
                 voteScore += votes.get(i).getValue();
-                if (user.equals(votes.get(i).getUser())) {
+                if (user != null && user.equals(votes.get(i).getUser())) {
                     postResponse.setUserVote(votes.get(i).getValue());
                 }
             }

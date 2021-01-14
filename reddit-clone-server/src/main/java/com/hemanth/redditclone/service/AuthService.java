@@ -154,11 +154,17 @@ public class AuthService {
     }
 
     User getCurrentUser() {
+        if (!isLogged()) return null;
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("%s not found", username)));
+    }
+
+    boolean isLogged() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return null != authentication && !("anonymousUser").equals(authentication.getName());
     }
 
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
