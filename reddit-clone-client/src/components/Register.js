@@ -6,7 +6,7 @@ import { useAuthState } from "../context/Auth";
 
 function Register() {
   const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [agreement, setAgreement] = useState(false);
   const [errors, setErrors] = useState({});
@@ -25,7 +25,7 @@ function Register() {
     const errorsMap = {};
     if (!agreement) errorsMap.agreement = "You must agree to T&Cs";
     if (email === "") errorsMap.email = "Email is Empty";
-    if (userName === "") errorsMap.userName = "Username is Empty";
+    if (username === "") errorsMap.username = "username is Empty";
     if (password === "") errorsMap.password = "Password is Empty";
     setErrors(errorsMap);
     return Object.keys(errorsMap).length === 0;
@@ -38,7 +38,7 @@ function Register() {
 
     try {
       await axios.post("auth/signup", {
-        userName,
+        username,
         email,
         password,
       });
@@ -97,10 +97,10 @@ function Register() {
             />
             <InputGroup
               type="text"
-              placeholder="Username"
-              value={userName}
-              setValue={setUserName}
-              error={errors.userName}
+              placeholder="username"
+              value={username}
+              setValue={setUsername}
+              error={errors.username}
             />
             <InputGroup
               type="password"

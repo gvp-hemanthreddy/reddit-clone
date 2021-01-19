@@ -1,14 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import axios from "axios";
 import classnames from "classnames";
+import { useAuthState } from "../context/Auth";
 
 dayjs.extend(relativeTime);
 
-function Post(props) {
-  const { post } = props;
+function PostCard(props) {
+  const { post, dispatch } = props;
+  const { authenticated } = useAuthState();
+  const history = useHistory();
   const {
     identifier,
     voteScore,
@@ -23,6 +26,10 @@ function Post(props) {
   } = post;
 
   const vote = async (value) => {
+    if (!authenticated) {
+      history.push("/login");
+      return;
+    }
     if (userVote === value) {
       value = 0;
     }
@@ -31,6 +38,9 @@ function Post(props) {
         postIdentifier: identifier,
         value,
       });
+      const newVoteScore = voteScore - userVote + value;
+      const payload = { ...post, userVote: value, voteScore: newVoteScore };
+      dispatch({ type: "UPDATE_POST", payload });
     } catch (e) {
       console.error("Error while voting");
     }
@@ -91,19 +101,19 @@ function Post(props) {
               to={`u/${username}`}
               className="mx-1 hover:underline"
             >{`u/${username}`}</Link>
-            <Link to={`r/${url}`} className="hover:underline">
+            <Link to={url} className="hover:underline">
               {dayjs(createdAt).fromNow()}
             </Link>
           </p>
         </div>
         <div className="py-1">
-          <Link to={`r/${url}`} className="my-1 text-lg font-medium">
-            {title}
+          <Link to={url}>
+            <h1 className="my-1 text-lg font-medium">{title}</h1>
+            <p className="my-1 text-sm">{body}</p>
           </Link>
-          <p className="my-1 text-sm">{body}</p>
         </div>
         <div className="flex items-center text-xs font-bold text-gray-500">
-          <Link to={`r/${url}`} className="p-1 mr-1 rounded hover:bg-gray-200">
+          <Link to={url} className="p-1 mr-1 rounded hover:bg-gray-200">
             <i className="mr-1 fas fa-comment-alt"></i>
             <span>{commentCount} Comments</span>
           </Link>
@@ -121,4 +131,4 @@ function Post(props) {
   );
 }
 
-export default Post;
+export default PostCard;

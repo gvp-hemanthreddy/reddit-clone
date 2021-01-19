@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
-import Post from "./Post";
+import PostCard from "./PostCard";
 
 function Subreddit(props) {
   const { name } = props.match.params;
@@ -24,11 +24,11 @@ function Subreddit(props) {
 
   let postsMarkup;
 
-  if (error != "") {
+  if (error !== "") {
     postsMarkup = error;
   } else if (posts && posts.length > 0) {
     postsMarkup = posts.map((post) => {
-      return <Post post={post} key={post.identifier} />;
+      return <PostCard post={post} key={post.identifier} />;
     });
   } else {
     postsMarkup = <p>No posts found</p>;

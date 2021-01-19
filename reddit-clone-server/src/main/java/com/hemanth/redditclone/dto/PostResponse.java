@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,5 @@ public class PostResponse {
     private int voteScore;
     private int commentCount;
     private Instant createdAt;
+    private List<CommentResponse> comments;
 }

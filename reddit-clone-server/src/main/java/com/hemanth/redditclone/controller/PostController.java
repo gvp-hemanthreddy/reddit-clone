@@ -49,6 +49,13 @@ public class PostController {
                 .body(commentService.createCommentOnPost(identifier, commentRequest));
     }
 
+    @GetMapping("{identifier}/{slug}/comments")
+    public ResponseEntity getPostWithComments(@PathVariable(value = "identifier") String identifier) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(commentService.getPostWithComments(identifier));
+    }
+
     @GetMapping("by-username/{username}")
     public ResponseEntity getPostsByUsername(@PathVariable(value = "username") String username) {
         return ResponseEntity

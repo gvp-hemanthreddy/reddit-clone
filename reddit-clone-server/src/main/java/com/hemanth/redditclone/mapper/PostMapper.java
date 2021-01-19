@@ -22,6 +22,8 @@ public interface PostMapper {
     @Mapping(source = "currentUser", target = "user")
     @Mapping(target = "identifier", expression = "java(com.hemanth.redditclone.util.Utils.makeId(7))")
     @Mapping(target = "slug", expression = "java(com.hemanth.redditclone.util.Utils.slugify(postRequest.getTitle()))")
+    @Mapping(target = "comments", expression = "java(null)")
+    @Mapping(target = "votes", expression = "java(null)")
     @Mapping(target = "createdAt", expression = "java(java.time.Instant.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.Instant.now())")
     Post mapToPost(PostRequest postRequest, Subreddit subreddit, User currentUser);
@@ -33,6 +35,11 @@ public interface PostMapper {
     @Mapping(source = "post.createdAt", target = "createdAt")
     @Mapping(source = "subreddit.name", target = "subreddit")
     @Mapping(target = "username", expression = "java(post.getUser().getUsername())")
+    @Mapping(target = "comments", expression = "java(null)")
+    @Mapping(target = "url", expression = "java(null)")
+    @Mapping(target = "userVote", expression = "java(0)")
+    @Mapping(target = "voteScore", expression = "java(0)")
+    @Mapping(target = "commentCount", expression = "java(0)")
     PostResponse mapToDto(Post post, Subreddit subreddit, User currentUser);
 
     @AfterMapping

@@ -39,9 +39,14 @@ axios.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (error.response.status === 403 && !originalRequest._retry) {
+    const refreshToken = LocalStorageService.getRefreshToken();
+
+    if (
+      error.response.status === 403 &&
+      !originalRequest._retry &&
+      refreshToken
+    ) {
       originalRequest._retry = true;
-      const refreshToken = LocalStorageService.getRefreshToken();
       return axios
         .post("/auth/refresh", {
           refreshToken,

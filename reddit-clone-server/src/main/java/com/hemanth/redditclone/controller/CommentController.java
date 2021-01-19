@@ -18,12 +18,6 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping("by-postId/{id}")
-    public ResponseEntity<List<CommentResponse>> getCommentsByPost(@PathVariable(value = "id") Long postId) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(commentService.getCommentsByPost(postId));
-    }
-
     @GetMapping("by-user/{username}")
     public ResponseEntity<List<CommentResponse>> getCommentsByUser(@PathVariable(value = "username") String username) {
         return ResponseEntity.status(HttpStatus.OK)
