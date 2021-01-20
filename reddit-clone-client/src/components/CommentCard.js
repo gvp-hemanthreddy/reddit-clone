@@ -79,7 +79,7 @@ function CommentCard(props) {
       {/* Body */}
       <div className="w-full p-2">
         <div className="text-xs">
-          <Link to={`u/${username}`} className="mr-1 font-bold hover:underline">
+          <Link to={`/u/${username}`} className="mr-1 font-bold hover:underline">
             {username}
           </Link>
           <span className="text-gray-500">{dayjs(createdAt).fromNow()}</span>

@@ -41,7 +41,7 @@ function Login() {
       });
       LocalStorageService.setToken(response.data);
       dispatch("LOGIN", response.data.username);
-      history.push("/");
+      history.goBack();
     } catch (err) {
       if (err.response?.data?.subErrors) {
         errorsListToMap(err.response.data.subErrors);

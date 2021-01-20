@@ -85,7 +85,7 @@ function PostCard(props) {
       {/* Body */}
       <div className="w-full p-2">
         <div className="flex items-center text-xs">
-          <Link to={`r/${subreddit}`} className="flex items-center">
+          <Link to={`/r/${subreddit}`} className="flex items-center">
             <img
               src="http://www.gravatar.com/avatar"
               alt="gravatar"
@@ -98,7 +98,7 @@ function PostCard(props) {
           <p className="flex items-center text-gray-500">
             <span>• Posted by </span>
             <Link
-              to={`u/${username}`}
+              to={`/u/${username}`}
               className="mx-1 hover:underline"
             >{`u/${username}`}</Link>
             <Link to={url} className="hover:underline">

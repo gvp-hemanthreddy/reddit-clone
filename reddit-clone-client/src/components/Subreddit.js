@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
 import PostCard from "./PostCard";
+import Sidebar from "./Sidebar";
 
 function Subreddit(props) {
   const { name } = props.match.params;
@@ -57,6 +58,7 @@ function Subreddit(props) {
         {/* Posts */}
         <div className="w-160">{postsMarkup}</div>
         {/* Sidebar */}
+        <Sidebar subreddit={subreddit} />
       </div>
     </Fragment>
   );

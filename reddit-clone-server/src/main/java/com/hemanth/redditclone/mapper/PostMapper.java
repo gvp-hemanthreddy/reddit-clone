@@ -45,7 +45,7 @@ public interface PostMapper {
     @AfterMapping
     default void setPostUrlAndCount(@MappingTarget PostResponse postResponse, Post post, User user) {
         Subreddit subreddit = post.getSubreddit();
-        postResponse.setUrl("r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
+        postResponse.setUrl("/r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
         List<Vote> votes = post.getVotes();
         if (votes != null) {
             int voteScore = 0;
