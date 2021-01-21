@@ -188,7 +188,7 @@ function PostPage(props) {
               </div>
               <div className="py-1">
                 <h1 className="my-1 text-lg font-medium">{title}</h1>
-                <p className="my-1 text-sm">{body}</p>
+                <pre className="my-1 text-sm">{body}</pre>
               </div>
               <div className="flex items-center text-xs font-bold text-gray-500">
                 <Link to={url} className="p-1 mr-1 rounded hover:bg-gray-200">

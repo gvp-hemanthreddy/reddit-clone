@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useAuthState } from "../context/Auth";
 
 function Sidebar(props) {
-  const { subreddit } = props;
+  const { subreddit, hideCreatePostButton } = props;
   const { authenticated } = useAuthState();
 
   return (
@@ -21,7 +21,7 @@ function Sidebar(props) {
             <i className="mr-2 fas fa-birthday-cake"></i>
             Created {dayjs(subreddit.createdAt).format("d MMM YYYY")}
           </p>
-          {authenticated && (
+          {authenticated && !hideCreatePostButton && (
             <Link to={`/r/${subreddit.name}/submit`}>
               <button className="w-full button blue">Create Post</button>
             </Link>
