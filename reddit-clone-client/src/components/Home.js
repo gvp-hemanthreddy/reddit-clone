@@ -52,7 +52,7 @@ function Home() {
   return (
     <Fragment>
       <NavBar />
-      <div className="container flex pt-4">
+      <div className="container flex py-4">
         {/* Posts */}
         <div className="w-160">
           {posts.map((post) => {

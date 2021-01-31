@@ -1,8 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import NavBar from "./NavBar";
 import Sidebar from "./Sidebar";
+import { useAuthState } from "../context/Auth";
 
 function CreatePost(props) {
   const { subredditname } = props.match.params;
@@ -11,6 +12,7 @@ function CreatePost(props) {
   const [subreddit, setSubreddit] = useState({});
   const [error, setError] = useState("");
   const history = useHistory();
+  const { authenticated } = useAuthState();
 
   useEffect(() => {
     const getSubreddit = async function () {
@@ -42,6 +44,10 @@ function CreatePost(props) {
       console.error("Error while creating post");
     }
   };
+
+  if (!authenticated) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Fragment>

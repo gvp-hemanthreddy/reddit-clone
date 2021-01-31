@@ -4,6 +4,7 @@ import com.hemanth.redditclone.dto.CommentRequest;
 import com.hemanth.redditclone.dto.CommentResponse;
 import com.hemanth.redditclone.model.Comment;
 import com.hemanth.redditclone.model.Post;
+import com.hemanth.redditclone.model.Subreddit;
 import com.hemanth.redditclone.model.User;
 import com.hemanth.redditclone.model.Vote;
 import org.mapstruct.AfterMapping;
@@ -28,6 +29,8 @@ public interface CommentMapper {
     @Mapping(source = "comment.identifier", target = "identifier")
     @Mapping(source = "comment.body", target = "body")
     @Mapping(target = "postIdentifier", expression = "java(comment.getPost().getIdentifier())")
+    @Mapping(target = "postTitle", expression = "java(comment.getPost().getTitle())")
+    @Mapping(target = "subreddit", expression = "java(comment.getPost().getSubreddit().getName())")
     @Mapping(target = "username", expression = "java(comment.getUser().getUsername())")
     @Mapping(source = "comment.createdAt", target = "createdAt")
     @Mapping(target = "userVote", expression = "java(0)")
@@ -36,6 +39,9 @@ public interface CommentMapper {
 
     @AfterMapping
     default void setVoteScoreAndUserVote(@MappingTarget CommentResponse commentResponse, Comment comment, User user) {
+        Post post = comment.getPost();
+        Subreddit subreddit = post.getSubreddit();
+        commentResponse.setPostUrl("/r/" + subreddit.getName() + "/" + post.getIdentifier() + "/" + post.getSlug());
         List<Vote> votes = comment.getVotes();
         if (votes != null) {
             int voteScore = 0;
