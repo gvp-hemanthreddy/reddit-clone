@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.FieldError;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,8 @@ public class SubredditService {
         }
 
         if (StringUtils.containsWhitespace(subredditRequest.getName())) {
-            throw new ApiRequestException("Subreddit name must not contain white space character");
+            FieldError fieldError = new FieldError("createSubredditRequest", "name", "Subreddit name must not contain white space character");
+            throw new ApiRequestException("Validation errors", Collections.singletonList(fieldError));
         }
 
         if (!StringUtils.hasText(subredditRequest.getTitle())) {
@@ -51,7 +54,8 @@ public class SubredditService {
         }
 
         if (subredditRepository.existsByName(subredditRequest.getName().toLowerCase())) {
-            throw new ApiRequestException("Subreddit name already exists");
+            FieldError fieldError = new FieldError("createSubredditRequest", "name", "Subreddit name already exists");
+            throw new ApiRequestException("Validation errors", Collections.singletonList(fieldError));
         }
 
         User user = authService.getCurrentUser();

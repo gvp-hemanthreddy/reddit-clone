@@ -127,8 +127,8 @@ function PostPage(props) {
   return (
     <Fragment>
       <NavBar />
-      <div className="container flex py-4">
-        <div className="bg-white border border-gray-300 rounded w-160 hover:border-gray-500">
+      <div className="container flex px-2 py-4 lg:px-0">
+        <div className="w-full bg-white border border-gray-300 rounded lg:w-160 hover:border-gray-500">
           {/* Post Info */}
           <div key={identifier} className="flex">
             {/* Vote Section */}
@@ -175,7 +175,7 @@ function PostPage(props) {
                     {"r/" + subreddit}
                   </span>
                 </Link>
-                <p className="flex items-center text-gray-500">
+                <p className="items-center hidden text-gray-500 md:flex">
                   <span>• Posted by </span>
                   <Link
                     to={`/u/${username}`}
@@ -235,7 +235,7 @@ function PostPage(props) {
                     <span className="text-gray-500">
                       Log in or sign up to leave a comment
                     </span>
-                    <div>
+                    <div className="flex">
                       <button
                         className="mr-1 button hollow"
                         onClick={() => history.push("/login")}

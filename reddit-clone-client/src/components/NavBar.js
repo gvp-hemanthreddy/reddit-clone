@@ -23,7 +23,7 @@ function NavBar() {
   };
 
   return (
-    <div className="inset-x-0 top-0 z-10 flex items-center justify-center h-12 px-5 bg-white">
+    <div className="inset-x-0 top-0 z-10 flex items-center justify-between h-12 px-5 bg-white">
       {/* Logo */}
       <div className="flex">
         <Link to="/">
@@ -33,19 +33,9 @@ function NavBar() {
             alt="Reddit Logo"
           />
         </Link>
-        <span className="text-2xl font-semibold">
+        <span className="hidden text-2xl font-semibold lg:block">
           <Link to="/">reddit</Link>
         </span>
-      </div>
-
-      {/* Search box */}
-      <div className="flex items-center mx-auto bg-gray-100 border rounded hover:bg-white hover:border-blue-500">
-        <i className="pl-4 pr-3 text-gray-500 fas fa-search"></i>
-        <input
-          type="text"
-          placeholder="Search"
-          className="py-1 pr-3 bg-transparent rounded md:w-160 focus:outline-none"
-        ></input>
       </div>
 
       {/* Auth buttons */}

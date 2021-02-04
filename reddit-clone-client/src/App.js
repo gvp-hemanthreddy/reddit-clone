@@ -8,6 +8,7 @@ import { AuthProvider } from "./context/Auth.js";
 import PostPage from "./components/PostPage";
 import CreatePost from "./components/CreatePost";
 import UserPage from "./components/UserPage";
+import CreateSubreddit from "./components/CreateSubreddit";
 
 function App() {
   //TODO: Use <NavBar /> here so that we can remove from home and subreddit
@@ -30,6 +31,7 @@ function App() {
             component={PostPage}
           ></Route>
           <Route path="/u/:username" exact component={UserPage}></Route>
+          <Route path="/subs/create" exact component={CreateSubreddit}></Route>
         </Switch>
       </Router>
     </AuthProvider>

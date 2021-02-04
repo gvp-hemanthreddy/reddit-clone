@@ -41,7 +41,7 @@ function Subreddit(props) {
       <div>
         <div className="w-full h-20 bg-blue-400"></div>
         <div className="w-full h-24 bg-white">
-          <div className="container flex">
+          <div className="container flex px-2 lg:px-0">
             <img
               src="http://www.gravatar.com/avatar"
               alt="gravatar"
@@ -54,9 +54,9 @@ function Subreddit(props) {
           </div>
         </div>
       </div>
-      <div className="container flex pt-4">
+      <div className="container flex px-2 pt-4 lg:px-0">
         {/* Posts */}
-        <div className="w-160">{postsMarkup}</div>
+        <div className="w-full lg:w-160">{postsMarkup}</div>
         {/* Sidebar */}
         <Sidebar subreddit={subreddit} />
       </div>

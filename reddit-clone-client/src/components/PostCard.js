@@ -95,7 +95,7 @@ function PostCard(props) {
               {"r/" + subreddit}
             </span>
           </Link>
-          <p className="flex items-center text-gray-500">
+          <p className="items-center hidden text-gray-500 md:flex">
             <span>• Posted by </span>
             <Link
               to={`/u/${username}`}

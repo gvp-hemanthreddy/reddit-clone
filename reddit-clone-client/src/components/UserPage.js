@@ -36,7 +36,7 @@ function UserPage(props) {
           </div>
         ) : (
           <Fragment>
-            <div className="w-160">
+            <div className="w-full px-2 lg:w-160 lg:px-0">
               {submissions.map((userSubmission) => {
                 if (userSubmission.type === "post") {
                   const post = userSubmission.submission;
@@ -52,7 +52,7 @@ function UserPage(props) {
                 }
               })}
             </div>
-            <div className="ml-6 w-80">
+            <div className="hidden ml-6 w-80 lg:block">
               <div className="bg-white rounded">
                 <div className="p-3 bg-blue-500 rounded-t">
                   <img

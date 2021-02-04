@@ -10,7 +10,7 @@
 
 @layer components {
   .button {
-    @apply inline-block w-32 py-1 text-xs font-semibold leading-5 text-center uppercase border rounded;
+    @apply inline-block w-20 py-1 text-xs font-semibold leading-5 text-center uppercase border rounded lg:w-32;
   }
 
   .button:disabled {

@@ -62,11 +62,11 @@ function Login() {
   return (
     <div className="flex bg-white">
       <div
-        className="h-screen bg-center bg-cover w-36"
+        className="hidden h-screen bg-center bg-cover w-36 lg:block"
         style={{ backgroundImage: "url('images/bricks.jpg')" }}
       ></div>
-      <div className="flex flex-col justify-center pl-6">
-        <div className="w-72">
+      <div className="flex flex-col justify-center py-2 pl-6 pr-2">
+        <div className="w-full lg:w-72">
           <h1 className="text-lg font-medium">Login</h1>
           <p className="mb-10 text-xs">
             By continuing, you agree to our User Agreement and Privacy Policy.

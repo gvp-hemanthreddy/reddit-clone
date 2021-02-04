@@ -1,7 +1,9 @@
 import React, { Fragment, useEffect, useReducer } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import axios from "axios";
 import PostCard from "./PostCard";
+import { useAuthState } from "../context/Auth";
 
 const initialState = { posts: [] };
 
@@ -32,6 +34,7 @@ const postReducer = (state, action) => {
 function Home() {
   const [state, dispatch] = useReducer(postReducer, initialState);
   const { posts } = state;
+  const { authenticated } = useAuthState();
 
   useEffect(() => {
     async function fetchData() {
@@ -54,7 +57,7 @@ function Home() {
       <NavBar />
       <div className="container flex py-4">
         {/* Posts */}
-        <div className="w-160">
+        <div className="w-full p-3 lg:w-160 lg:p-0">
           {posts.map((post) => {
             return (
               <PostCard post={post} key={post.identifier} dispatch={dispatch} />
@@ -62,6 +65,26 @@ function Home() {
           })}
         </div>
         {/* Sidebar */}
+        <div className="hidden ml-6 w-80 lg:block">
+          <div className="bg-white rounded">
+            <div className="p-3 text-center bg-blue-500 rounded-t">
+              <p className="font-semibold text-white">Home</p>
+            </div>
+            <div className="p-3">
+              <p className="mb-3 text-sm">
+                Your personal Reddit frontpage. Come here to check in with your
+                favorite communities.
+              </p>
+              {authenticated && (
+                <Link to={`/subs/create`}>
+                  <button className="w-full button blue">
+                    Create Community
+                  </button>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </Fragment>
   );
