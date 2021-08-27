@@ -109,7 +109,7 @@ function PostCard(props) {
         <div className="py-1 overflow-x-hidden max-h-32">
           <Link to={url}>
             <h1 className="my-1 text-lg font-medium">{title}</h1>
-            <pre className="my-1 text-sm">{body}</pre>
+            <pre className="my-1 text-sm whitespace-pre-wrap">{body}</pre>
           </Link>
         </div>
         <div className="flex items-center text-xs font-bold text-gray-500">

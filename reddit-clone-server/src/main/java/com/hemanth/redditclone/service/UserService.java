@@ -61,7 +61,7 @@ public class UserService {
         return UserSubmissionResponse
                 .builder()
                 .username(username)
-                .createdAt(user.getCreated())
+                .createdAt(user.getCreatedAt())
                 .submissions(userSubmissions)
                 .build();
     }

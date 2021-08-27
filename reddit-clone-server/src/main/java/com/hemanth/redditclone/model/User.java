@@ -23,7 +23,7 @@ import java.time.Instant;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     private String firstName;
 
@@ -34,14 +34,16 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Length(min = 3, max = 255, message = "Must be at least 3 characters long")
+    @Length(min = 3, max = 15, message = "Must be at least 3 characters long")
     @Column(unique = true)
     private String username;
 
-    @Length(min = 6, max = 255, message = "Must be at least 6 characters long")
+    @Length(min = 6, max = 100, message = "Must be at least 6 characters long")
     private String password;
 
-    private Instant created;
-
     private boolean enabled;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
 }

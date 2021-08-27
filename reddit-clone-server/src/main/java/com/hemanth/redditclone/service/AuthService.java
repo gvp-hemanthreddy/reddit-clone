@@ -77,7 +77,7 @@ public class AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setCreated(now());
+        user.setCreatedAt(now());
         user.setEnabled(false);
 
         userRepository.save(user);
@@ -96,8 +96,8 @@ public class AuthService {
     }
 
     private void fetchUserAndEnable(VerificationToken verificationToken) {
-        Long userId = verificationToken.getUser().getUserId();
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> new ApiRequestException("User not found with id - " + userId));
+        Long userId = verificationToken.getUser().getId();
+        User user = userRepository.findById(userId).orElseThrow(() -> new ApiRequestException("User not found with id - " + userId));
         user.setEnabled(true);
         userRepository.save(user);
     }
